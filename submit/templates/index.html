@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Compiler{% endblock %}
+
+{% block content %}
+<h1>Code Compiler</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Run Code</button>
+</form>
+
+{% endblock %}

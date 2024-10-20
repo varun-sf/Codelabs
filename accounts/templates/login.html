@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
     <div class="container mt-5">
       <!-- Login form -->
       <form
@@ -18,7 +11,7 @@
         enctype="multipart/form-data"
       >
         <h1 style="text-align: center">
-          <span style="color: green">Mysite</span>
+          <span style="color: green">Codelabs</span>
         </h1>
 
         {% csrf_token %}
@@ -69,5 +62,4 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
-  </body>
-</html>
+    {% endblock %}
