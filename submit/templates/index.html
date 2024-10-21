@@ -3,11 +3,52 @@
 {% block title %}Compiler{% endblock %}
 
 {% block content %}
-<h1>Code Compiler</h1>
-<form method="post">
+<h1 class="container">Code Compiler</h1>
+
+<form method="post" class="container">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Run Code</button>
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="form-group col-md-3">
+                <select name="language" id="id_language" class="form-control container" required>
+                    <option value="" disabled selected>Select Language</option>
+                    <option value="py" {% if form.language.value == "py" %}selected{% endif %}>Python</option>
+                    <option value="c" {% if form.language.value == "c" %}selected{% endif %}>C</option>
+                    <option value="cpp" {% if form.language.value == "cpp" %}selected{% endif %}>C++</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary">Run Code</button>
+        </div>
+    <div>
+    <div class="row">
+        <!-- Left side: Code input (big box) -->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="id_code">Code</label>
+                <textarea name="code" id="id_code" class="form-control" rows="15">{{ form.code.value|default_if_none:"" }}</textarea>
+            </div>
+        </div>
+
+        <!-- Right side: Input data and Output data stacked vertically -->
+        <div class="col-md-6">
+            <!-- Input data (full width on the right side) -->
+            <div class="form-group">
+                <label for="id_input_data">Input Data</label>
+                <textarea name="input_data" id="id_input_data" class="form-control" rows="5">{{ form.input_data.value|default_if_none:"" }}</textarea>
+            </div>
+
+            <!-- Output data (full width on the right side) -->
+            <div class="form-group">
+                <label for="id_output_data">Output Data</label>
+                <textarea id="id_output_data" class="form-control" rows="8" readonly>{{ submission.output_data|default_if_none:"" }}</textarea>
+            </div>
+        </div>
+    </div>
+
+    
 </form>
 
 {% endblock %}

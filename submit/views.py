@@ -20,6 +20,8 @@ def submit(request):
             )
             submission.output_data = output
             submission.save()
+            # form = CodeSubmissionForm(instance=submission)
+
             return render(request, "result.html", {"submission": submission})
     else:
         form = CodeSubmissionForm()
