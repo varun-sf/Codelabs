@@ -1,18 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}problems{% endblock %}
 
 {% block content %}
 <div  class="container">
-
     <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action">
-          The current link item
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-        <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-        <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-        <a class="list-group-item list-group-item-action disabled" aria-disabled="true">A disabled link item</a>
+      {% for problem in problems %}
+        <a href="{{problem.id}}" class="list-group-item list-group-item-action">{{problem.title}}</a>       
+      {% endfor %}
       </div>
     <div>
 {% endblock %}

@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}problem{% endblock %}
 
 {% block content %}
+<form method="post" class="container">
+    {% csrf_token %}
+    <div class="container d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary">Run Code</button>
+    </div>
+   <div class="row">
+        <div class="col-md-6" >
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" class="form-control" rows="20" readonly>{{ problem.description}}</textarea>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="id_code">Code</label>
+                <textarea name="code" id="id_code" class="form-control" rows="20"></textarea>
+            </div>
+        </div>
+   </div>
+</form>
 
 {% endblock %}
