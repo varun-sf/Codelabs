@@ -13,6 +13,9 @@ class CodeSubmissionForm(forms.ModelForm):
 
     class Meta:
         model = CodeSubmission
-        fields = ["language", "code", "input_data"]
+        fields = ["language", "code", "input_data","output_data"]
+        widgets = {
+            'output_data': forms.Textarea(attrs={'readonly': 'readonly'}),
+        }
 
 
