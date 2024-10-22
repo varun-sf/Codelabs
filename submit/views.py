@@ -18,11 +18,13 @@ def submit(request):
             output = run_code(
                 submission.language, submission.code, submission.input_data
             )
+            print(output)
             submission.output_data = output
             submission.save()
-            # form = CodeSubmissionForm(instance=submission)
+            print(submission.output_data)
+            form = CodeSubmissionForm(instance=submission)
 
-            return render(request, "result.html", {"submission": submission})
+            return render(request, "index.html", {"form": form})
     else:
         form = CodeSubmissionForm()
     return render(request, "index.html", {"form": form})
@@ -75,16 +77,17 @@ def run_code(language, code, input_data):
                     )
     elif language == "py":
         # Code for executing Python script
+        
         with open(input_file_path, "r") as input_file:
-            with open(output_file_path, "w") as output_file:
-                subprocess.run(
-                    ["python3", str(code_file_path)],
-                    stdin=input_file,
-                    stdout=output_file,
-                )
-
+                with open(output_file_path, "w") as output_file:
+                    subprocess.run(
+                        ["python", str(code_file_path)],
+                        stdin=input_file,
+                        stdout=output_file,
+                    )
+        
     # Read the output from the output file
     with open(output_file_path, "r") as output_file:
         output_data = output_file.read()
-
+    print(output_data)
     return output_data
