@@ -4,17 +4,19 @@
 
 {% block content %}
     <div class="container mt-5">
+
       <!-- Registration form -->
       <form
         class="col-6 mx-auto card p-3 shadow-lg"
         method="post"
         enctype="multipart/form-data"
+        style="background-color: rgba(33, 37, 41, 1); color:#ffffff;height:550px;width:40%";
       >
         {% csrf_token %}
         <!-- CSRF token for security -->
         <!-- Registration form heading -->
         <h1 style="text-align: center">
-          <span style="color: green">Codelabs</span>
+          <span>Codelabs</span>
         </h1>
         <h3>Register</h3>
         <hr />
@@ -26,12 +28,11 @@
         </div>
         {% endif %}
 
-        <!-- Username input field -->
         <div class="form-group">
           <label for="exampleInputEmail1">Username</label>
           <input
             type="text"
-            class="form-control"
+            class="form-control custom-input my-2"
             name="username"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
@@ -45,7 +46,7 @@
           <label for="exampleInputPassword1">Password</label>
           <input
             type="password"
-            class="form-control"
+            class="form-control my-2"
             name="password"
             id="exampleInputPassword1"
             placeholder="Password"
@@ -57,7 +58,7 @@
         <p>Already have an account <a href="/auth/login/">Login</a></p>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" style="background-color: rgba(33, 37, 41, 1);">Submit</button>
       </form>
     </div>
     {% endblock %}

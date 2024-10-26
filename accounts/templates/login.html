@@ -6,12 +6,13 @@
     <div class="container mt-5">
       <!-- Login form -->
       <form
-        class="col-6 mx-auto card p-3 shadow-lg"
+        class="col-1 mx-auto card p-3 shadow-lg"
         method="post"
         enctype="multipart/form-data"
+        style="background-color: rgba(33, 37, 41, 1); color:#ffffff;height:550px;width:40%";
       >
         <h1 style="text-align: center">
-          <span style="color: green">Codelabs</span>
+          <span >Codelabs</span>
         </h1>
 
         {% csrf_token %}
@@ -33,7 +34,7 @@
           <label for="exampleInputEmail1">Username</label>
           <input
             type="text"
-            class="form-control"
+            class="form-control my-2"
             name="username"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
@@ -48,7 +49,7 @@
           <input
             type="password"
             name="password"
-            class="form-control"
+            class="form-control my-2"
             id="exampleInputPassword1"
             placeholder="Password"
             required
@@ -59,7 +60,7 @@
         <p>Don't have an account <a href="/auth/register/">Register</a></p>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" style="background-color: rgba(33, 37, 41, 1);">Submit</button>
       </form>
     </div>
-    {% endblock %}
+  {% endblock %}
