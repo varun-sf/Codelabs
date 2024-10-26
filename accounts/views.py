@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.template import loader
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def register_user(request):
@@ -46,7 +47,7 @@ def login_user(request):
         user = authenticate(username=username, password=password)
 
         if user is None:
-            messages.info(request,'invalid password')
+            messages.info(request,'Invalid password')
             return redirect('/auth/login')
         
 
@@ -61,5 +62,14 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    messages.info(request,'logout successful')
     return redirect('/auth/login/')
+
+
+@login_required
+def profile_user(request):
+    print("hiiiiiiiiiiiiiii")
+    print(request.user)
+    template = loader.get_template('profile.html')
+    context ={"user": request.user} 
+
+    return HttpResponse(template.render(context,request))
