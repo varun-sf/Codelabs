@@ -23,5 +23,5 @@ urlpatterns = [
     path("auth/", include("accounts.urls")),
     path("submit/", include("submit.urls")),
     path("home/", include("home.urls")),
-    path("",include("solveproblems.urls"))
+    path("problems/",include("solveproblems.urls"))
 ]

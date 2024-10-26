@@ -89,5 +89,4 @@ def run_code(language, code, input_data):
     # Read the output from the output file
     with open(output_file_path, "r") as output_file:
         output_data = output_file.read()
-    print(output_data)
-    return output_data
+    return output_data.rstrip()
