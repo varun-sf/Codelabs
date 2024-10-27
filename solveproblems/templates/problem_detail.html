@@ -6,13 +6,6 @@
 <form method="post">
     {% csrf_token %}
     <div class="container d-flex justify-content-center align-items-center">
-        <!-- Select Language -->
-        <select name="language" id="id_language" class="form-select me-2 bg-dark" style="width: auto;color:white;" required>
-            <option value="" disabled>Select Language</option>
-            <option value="py" {% if form.language.value == "py" or selected_language == "py" %}selected{% endif %}>Python</option>
-            <option value="c" {% if form.language.value == "c" or selected_language == "c" %}selected{% endif %}>C</option>
-            <option value="cpp" {% if form.language.value == "cpp" or selected_language == "cpp" %}selected{% endif %}>C++</option>
-        </select>
         
         <button type="submit" class="btn btn-primary">Run Code</button>
     </div>
@@ -35,6 +28,13 @@
             <!-- Single section to show either Code or Test Cases -->
             <div id="displaySection" class="form-group">
                 <!-- Code Textarea, with the code retained after submission -->
+                <!-- Select Language -->
+                <select name="language" id="id_language" class="form-select me-2 bg-dark" style="width: auto;color:white;display:none;" required>
+                    <option value="" disabled>Select Language</option>
+                    <option value="py" {% if form.language.value == "py" or selected_language == "py" %}selected{% endif %}>Python</option>
+                    <option value="c" {% if form.language.value == "c" or selected_language == "c" %}selected{% endif %}>C</option>
+                    <option value="cpp" {% if form.language.value == "cpp" or selected_language == "cpp" %}selected{% endif %}>C++</option>
+                </select>
                 <textarea name="code" id="id_code" class="form-control bg-dark" rows="10" style="color:white; display:none;">{{ form.code.value|default:code_value }}</textarea>
 
                 <!-- Test Cases section (Initially Hidden) -->
@@ -73,10 +73,11 @@
     const codeTextarea = document.getElementById('id_code');
     const testCasesSection = document.getElementById('testCasesSection');
     const runCodeButton = document.querySelector('button[type="submit"]');
-
+    const language = document.getElementById('id_language');
     // Show Code textarea and hide Test Cases
     codeButton.addEventListener('click', function() {
         codeTextarea.style.display = "block";  // Show code
+        language.style.display = "block";  
         testCasesSection.style.display = "none";  // Hide test cases section
     });
 
@@ -84,6 +85,7 @@
     testCasesButton.addEventListener('click', function() {
         testCasesSection.style.display = "block";  // Show test cases section
         codeTextarea.style.display = "none";  // Hide code
+        language.style.display = "none";
     });
     // Trigger testCasesButton event when Run Code is pressed
     runCodeButton.addEventListener('click', function() {
