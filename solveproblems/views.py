@@ -23,44 +23,41 @@ def problem_detail(request, problem_id):
     
     problem = Problem.objects.get(id=problem_id)
     test_cases = problem.test_cases.all()
-    print(len(test_cases))
+    test = []
+    for i in test_cases:
+        test.append({"input":i.input,
+                     "output":i.output,
+                     "result": None})
+
     if request.method == 'POST':
         # Capture the user's submitted code
         selected_language = request.POST.get('language')
         code_value = request.POST.get('code')
                
         # Here you can pass the `user_code` to a function for processing
-        result = []
-        for test_case in test_cases:
-         ans = test_case
-         output = run_code(selected_language, code_value, test_case.input) # Assume you have a function `run_code` to process the code
-         test_passed = output == test_case.output
+        
+        for test_case in test:
+         
+         output = run_code(selected_language, code_value, test_case["input"]) # Assume you have a function `run_code` to process the code
+         test_case["result"] = output == test_case["output"]
         
         # Build the result dictionary for each test case
-         ans = {
-            'id': test_case.id,
-            'input': test_case.input,
-            'expected_output': test_case.output,
-            'actual_output': output,
-            'result': test_passed
-         }
+         
 
-         result.append(ans)
-        print(ans)  # Print the result for debugging purposes
-        
+          # Print the result for debugging purposes
+        print(test)
 
     else:
         # Default values for GET request (first load of the page)
         selected_language = None
         code_value = ""
-        result = None
 
     context = {
         'problem': problem,
         'selected_language': selected_language,
         'code_value': code_value,
-        'test_cases': problem.test_cases.all(),
-        'result':  result
+        'test_cases': test,
+        
 
     }
 
