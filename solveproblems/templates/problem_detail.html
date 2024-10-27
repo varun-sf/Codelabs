@@ -15,8 +15,33 @@
    <div class="row">
         <div class="col-md-6 ps-5">
             <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" class="form-control bg-dark" rows="20" readonly style="color:white;">{{ problem.description }}</textarea>
+                <div class="d-flex mb-3">
+                    <button id="descriptionButton" type="button" class="btn bg-dark me-2" style="color:white;">Description</button>
+                    <button id="submissionButton" type="button" class="btn btn-secondary" style="color:white;">Submission</button>
+                </div>
+
+                <div id="displaySection" class="form-group bg-dark" style="border-radius: 0.25rem;border: 1px solid #ced4da;" >
+                <div id="description-text">
+                    <textarea id="description" class="form-control bg-dark" rows="20" readonly style="color:white;">{{ problem.description }}</textarea>
+                </div>
+                <div id="submissions-text" class="card bg-dark text-white overflow-auto" style="display: none; height: 500px;">
+                    <div class="card-body">
+                        {% if submissions %}
+                            <ul class="list-group list-group-flush">
+                                {% for submission in submissions %}
+                                    <li class="list-group-item d-flex justify-content-between bg-dark text-white">
+                                        <span>{{ forloop.counter }}- {{ submission.language }}</span>
+                                        <span>{{ submission.verdict }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="mb-0">No submissions yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+               </div>
             </div>
         </div>
 
@@ -71,12 +96,25 @@
 
 <script>
     // JavaScript to toggle between Code and Test Cases sections
+    const descriptionButton = document.getElementById('descriptionButton');
+    const submissionButton = document.getElementById('submissionButton');
     const codeButton = document.getElementById('codeButton');
     const testCasesButton = document.getElementById('testCasesButton');
     const codeTextarea = document.getElementById('id_code');
     const testCasesSection = document.getElementById('testCasesSection');
     const runCodeButton = document.querySelector('button[type="submit"]');
     const language = document.getElementById('id_language');
+    const descriptionText = document.getElementById("description-text")
+    const submissionText = document.getElementById("submissions-text")
+
+    descriptionButton.addEventListener('click', function() {
+          descriptionText.style.display =  'block';
+          submissionText.style.display = 'none';
+    });
+    submissionButton.addEventListener('click', function() {
+        submissionText.style.display =  'block';
+        descriptionText.style.display = 'none';
+    });
     // Show Code textarea and hide Test Cases
     codeButton.addEventListener('click', function() {
         codeTextarea.style.display = "block";  // Show code

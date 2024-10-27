@@ -24,6 +24,8 @@ def problem_detail(request, problem_id):
     
     problem = Problem.objects.get(id=problem_id)
     test_cases = problem.test_cases.all()
+    user = get_object_or_404(Users, username=request.user.username)
+    
     test = []
     for i in test_cases:
         test.append({"input":i.input,
@@ -46,7 +48,6 @@ def problem_detail(request, problem_id):
          
          test_case["result"] = temp_bool
 
-         user = get_object_or_404(Users, username=request.user.username)
         if 'submit_code' in request.POST:
             Submission.objects.create(
                 user= user,
@@ -55,21 +56,36 @@ def problem_detail(request, problem_id):
                 language=selected_language,
                 verdict= "AC"  if all_pass else "WA",
             )
-
     else:
         # Default values for GET request (first load of the page)
         selected_language = None
         code_value = ""
+    # Retrieve all submissions for the current user and problem
+    submissions = Submission.objects.filter(user=user, problem=problem)
+    for sub in submissions:
+        if  sub.verdict == "AC":
+            verdict = "Accepted"
+        else:
+            verdict = "Wrong Answer"
+        
+        if sub.language=="py":
+           language ="Python"
+        elif sub.language=="c":
+            language = "C"
+        else:
+            language = "C++"
 
+        context_sub = [{"language": language,
+                    "verdict": verdict}]
+    print(context_sub)
+    
     context = {
         'problem': problem,
         'selected_language': selected_language,
         'code_value': code_value,
         'test_cases': test,
-        
-
+        'submissions': context_sub,
     }
-
     template = loader.get_template('problem_detail.html')
     return HttpResponse(template.render(context,request))
 
