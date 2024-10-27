@@ -5,9 +5,11 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    <div class="container d-flex justify-content-center align-items-center">
+    <div class="container d-flex justify-content-center align-items-center mt-1">
         
-        <button type="submit" class="btn btn-primary">Run Code</button>
+        <button type="submit" name="run_code" class="btn bg-dark mx-2" style="color:#8b9197;"><i class="bi bi-play-fill"></i> Run</button>
+        <!-- Submit Button -->
+        <button type="submit" name="submit_code" class="btn bg-dark" style="color:#28c244;"><i class="bi bi-cloud-arrow-up"></i> Submit</button>
     </div>
 
    <div class="row">
@@ -19,28 +21,29 @@
         </div>
 
         <div class="col-md-6 pe-5">
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <!-- Buttons for Code and Test Cases -->
                 <button id="codeButton" type="button" class="btn mb-3 bg-dark" style="color:white;">Code</button>
                 <button id="testCasesButton" type="button" class="btn btn-secondary mb-3">Test Cases</button>
             </div>
 
             <!-- Single section to show either Code or Test Cases -->
-            <div id="displaySection" class="form-group">
+            <div id="displaySection" class="form-group bg-dark" style="border-radius: 0.25rem;border: 1px solid #ced4da;" >
+                {% comment %} style="border: 1px solid #ced4da;" {% endcomment %}
                 <!-- Code Textarea, with the code retained after submission -->
                 <!-- Select Language -->
-                <select name="language" id="id_language" class="form-select me-2 bg-dark" style="width: auto;color:white;display:none;" required>
+                <select name="language" id="id_language" class="form-select m-2 bg-dark" style="width: auto;color:white;display:none;" required>
                     <option value="" disabled>Select Language</option>
                     <option value="py" {% if form.language.value == "py" or selected_language == "py" %}selected{% endif %}>Python</option>
                     <option value="c" {% if form.language.value == "c" or selected_language == "c" %}selected{% endif %}>C</option>
                     <option value="cpp" {% if form.language.value == "cpp" or selected_language == "cpp" %}selected{% endif %}>C++</option>
                 </select>
-                <textarea name="code" id="id_code" class="form-control bg-dark" rows="10" style="color:white; display:none;">{{ form.code.value|default:code_value }}</textarea>
+                <textarea name="code" id="id_code" class="form-control bg-dark no-border" rows="10" style="color:white; display:none;">{{ form.code.value|default:code_value }}</textarea>
 
                 <!-- Test Cases section (Initially Hidden) -->
                 <div id="testCasesSection" >
                     <!-- Dynamic buttons for each test case -->
-                    <div class="mb-2">
+                    <div class="m-2">
                         {% for test_case in test_cases %}
                           {% if test_case.result %}
                             <button type="button" class="btn btn-success testCaseButton" data-input="{{ test_case.input }}" data-output="{{ test_case.output }}">
@@ -59,7 +62,7 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    <textarea id="test_cases" class="form-control bg-dark" rows="10" readonly style="color:white;"></textarea>
+                    <textarea id="test_cases" class="form-control bg-dark no-border" rows="10" readonly style="color:white;"></textarea>
                 </div>
             </div>
         </div>
