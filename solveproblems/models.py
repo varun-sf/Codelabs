@@ -1,4 +1,5 @@
 from django.db import models
+from accounts.models import Users
 
 class Problem(models.Model):
     EASY = 'Easy'
@@ -29,3 +30,21 @@ class TestCase(models.Model):
 
     def __str__(self):
         return f"TestCase for Problem: {self.problem.title}"
+
+
+class Submission(models.Model):
+    VERDICT_CHOICES = [
+        ('AC', 'Accepted'),
+        ('WA', 'Wrong Answer'),
+        # Add more verdicts as needed
+    ]
+
+    user = models.ForeignKey(Users, related_name="submissions", on_delete=models.CASCADE)
+    problem = models.ForeignKey(Problem, related_name="submissions", on_delete=models.CASCADE)
+    code = models.TextField()
+    language = models.CharField(max_length=20)
+    verdict = models.CharField(max_length=3, choices=VERDICT_CHOICES)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Submission by {self.user} for Problem {self.problem.id} - {self.verdict}"

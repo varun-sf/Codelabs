@@ -4,8 +4,9 @@ from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from .forms import ProblemForm, TestCaseForm
 from django.views.decorators.csrf import csrf_exempt
-from .models import Problem
+from .models import Problem, Submission
 from submit.views import run_code
+from accounts.models import Users
 # Create your views here.
 
 def problems_list(request):
@@ -35,17 +36,25 @@ def problem_detail(request, problem_id):
         code_value = request.POST.get('code')
                
         # Here you can pass the `user_code` to a function for processing
-        
+        all_pass = True
         for test_case in test:
          
          output = run_code(selected_language, code_value, test_case["input"]) # Assume you have a function `run_code` to process the code
-         test_case["result"] = output == test_case["output"]
-        
-        # Build the result dictionary for each test case
+         temp_bool = output == test_case["output"]
+         if not temp_bool:
+             all_pass = False
          
+         test_case["result"] = temp_bool
 
-          # Print the result for debugging purposes
-        print(test)
+         user = get_object_or_404(Users, username=request.user.username)
+        if 'submit_code' in request.POST:
+            Submission.objects.create(
+                user= user,
+                problem=problem,
+                code=code_value,
+                language=selected_language,
+                verdict= "AC"  if all_pass else "WA",
+            )
 
     else:
         # Default values for GET request (first load of the page)
