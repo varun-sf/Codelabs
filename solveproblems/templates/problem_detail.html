@@ -3,6 +3,13 @@
 {% block title %}Problem{% endblock %}
 
 {% block content %}
+{% if not is_authenticated %}
+<div class="alert alert-warning alert-dismissible fade show mx-auto text-center" role="alert" style="max-width: 350px; height: 60px">
+    Login to submit solution!!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+     
+{% endif %}
 <form method="post">
     {% csrf_token %}
     <div class="container d-flex justify-content-center align-items-center mt-1">
@@ -63,7 +70,7 @@
                     <option value="c" {% if form.language.value == "c" or selected_language == "c" %}selected{% endif %}>C</option>
                     <option value="cpp" {% if form.language.value == "cpp" or selected_language == "cpp" %}selected{% endif %}>C++</option>
                 </select>
-                <textarea name="code" id="id_code" class="form-control bg-dark no-border" rows="10" style="color:white; display:none;">{{ form.code.value|default:code_value }}</textarea>
+                <textarea name="code" id="id_code" class="form-control bg-dark no-border" rows="15" style="color:white; display:none;">{{ form.code.value|default:code_value }}</textarea>
 
                 <!-- Test Cases section (Initially Hidden) -->
                 <div id="testCasesSection" >
@@ -87,7 +94,7 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    <textarea id="test_cases" class="form-control bg-dark no-border" rows="10" readonly style="color:white;"></textarea>
+                    <textarea id="test_cases" class="form-control bg-dark no-border" rows="15" readonly style="color:white;"></textarea>
                 </div>
             </div>
         </div>
