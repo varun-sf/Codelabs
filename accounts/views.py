@@ -67,8 +67,7 @@ def logout_user(request):
 
 @login_required
 def profile_user(request):
-    print("hiiiiiiiiiiiiiii")
-    print(request.user)
+    
     template = loader.get_template('profile.html')
     context ={"user": request.user} 
 
