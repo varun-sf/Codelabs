@@ -20,11 +20,26 @@ def problems_list(request):
     return HttpResponse(template.render(context,request))
 
 
+
+def submission_setter(sub):
+        if  sub.verdict == "AC":
+            verdict = "Accepted"
+        else:
+            verdict = "Wrong Answer"      
+        if sub.language=="py":
+           language ="Python"
+        elif sub.language=="c":
+            language = "C"
+        else:
+            language = "C++"
+        return {"language": language,
+                    "verdict": verdict}
+
 def problem_detail(request, problem_id):
     
     problem = Problem.objects.get(id=problem_id)
     test_cases = problem.test_cases.all()
-    user = get_object_or_404(Users, username=request.user.username)
+    user = get_object_or_404(Users, username=request.user.username) if request.user.is_authenticated else None
     
     test = []
     for i in test_cases:
@@ -49,34 +64,23 @@ def problem_detail(request, problem_id):
          test_case["result"] = temp_bool
 
         if 'submit_code' in request.POST:
-            Submission.objects.create(
-                user= user,
-                problem=problem,
-                code=code_value,
-                language=selected_language,
-                verdict= "AC"  if all_pass else "WA",
-            )
+            if request.user.is_authenticated:
+                Submission.objects.create(
+                    user= user,
+                    problem=problem,
+                    code=code_value,
+                    language=selected_language,
+                    verdict= "AC"  if all_pass else "WA",
+                )
     else:
         # Default values for GET request (first load of the page)
         selected_language = None
         code_value = ""
     # Retrieve all submissions for the current user and problem
     submissions = Submission.objects.filter(user=user, problem=problem)
+    context_sub = []
     for sub in submissions:
-        if  sub.verdict == "AC":
-            verdict = "Accepted"
-        else:
-            verdict = "Wrong Answer"
-        
-        if sub.language=="py":
-           language ="Python"
-        elif sub.language=="c":
-            language = "C"
-        else:
-            language = "C++"
-
-        context_sub = [{"language": language,
-                    "verdict": verdict}]
+        context_sub.append(submission_setter(sub))
     print(context_sub)
     
     context = {
@@ -85,6 +89,7 @@ def problem_detail(request, problem_id):
         'code_value': code_value,
         'test_cases': test,
         'submissions': context_sub,
+        'is_authenticated': user
     }
     template = loader.get_template('problem_detail.html')
     return HttpResponse(template.render(context,request))
